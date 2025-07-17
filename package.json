@@ -6,6 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "generate": "prisma generate",
+  "migrate": "prisma migrate dev --name init",
+  "studio": "prisma studio",
     "lint": "next lint"
   },
   "dependencies": {
