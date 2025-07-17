@@ -1,3 +1,5 @@
+"use client";
+
 import HeroSection from "@/components/Hero";
 import Hero_Feat from "@/components/Hero_Features";
 import Stats from "@/components/Stats";

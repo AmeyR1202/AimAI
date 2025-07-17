@@ -1,7 +1,7 @@
 import React from "react";
 
 const AICoverLetterPage = () => {
-  return <div>AICoverLetterPage</div>;
+  return <div>Hello</div>;
 };
 
 export default AICoverLetterPage;
