@@ -4,6 +4,8 @@ import { db } from "@/lib/Prisma";
 import { auth } from "@clerk/nextjs/server";
 
 export async function updateUser(data) {
+  console.log("Updating user with data:", data);
+
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -18,23 +20,22 @@ export async function updateUser(data) {
   try {
     const result = await db.$transaction(
       async (tx) => {
-        // Check if the industry exists
-        let industryInsight = await tx.industryInsight.findUnique({
+        // ✅ FIXED: use data.industry instead of industry.data
+        let industryInsight = await tx.industryInsight.findFirst({
           where: {
-            industry: industry.data,
+            industry: data.industry,
           },
         });
 
-        // If industry doesn't exist, create it
         if (!industryInsight) {
           industryInsight = await tx.industryInsight.create({
             data: {
               industry: data.industry,
               salaryRanges: [],
               growthRate: 0,
-              demandLevel: "Medium",
+              demandLevel: "MEDIUM",
               topSkills: [],
-              marketOutlook: "Neutral",
+              marketOutlook: "NEUTRAL",
               keyTrends: [],
               recommendedSkills: [],
               nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
@@ -42,7 +43,6 @@ export async function updateUser(data) {
           });
         }
 
-        // Update user
         const updatedUser = await tx.user.update({
           where: {
             id: user.id,
@@ -57,14 +57,15 @@ export async function updateUser(data) {
 
         return { updatedUser, industryInsight };
       },
-      {
-        timeout: 10000,
-      }
+      { timeout: 10000 }
     );
 
-    return result;
+    return { success: true, ...result };
   } catch (error) {
-    console.error("Error Updating User and Industry", error.message);
+    console.error("Error Updating User and Industry", {
+      message: error.message,
+      stack: error.stack,
+    });
     throw new Error("Failed to update the Profile");
   }
 }
