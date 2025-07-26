@@ -1,23 +1,46 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
-
-const animationProps = {
-  initial: { opacity: 0, y: 50 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 1.2, ease: "easeInOut" },
-};
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const OurWhy = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  // Stats data
+  const stats = [
+    { value: "50+", label: "Industries Covered" },
+    { value: "1000+", label: "Interview Questions" },
+    { value: "95%", label: "Success Rate" },
+    { value: "24/7", label: "AI Support" },
+  ];
+
+  // Animation variants
+  const variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.2, duration: 0.6 },
+    }),
+  };
+
+  // Main animation props
+  const animationProps = {
+    initial: { opacity: 0, y: 50 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, ease: "easeInOut" },
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-32">
+      {/* Main content section */}
       <motion.div
         className="grid grid-cols-1 md:grid-cols-12 gap-8"
         {...animationProps}
       >
-        {/* About Us section with yellow line */}
-        <div className="col-span-12 md:col-span-5">
-          <motion.div className="flex items-start" {...animationProps}>
+        {/* About Us column */}
+        <div className="col-span-12 md:col-span-6">
+          <div className="flex items-start">
             <motion.div
               className="w-1 bg-yellow-500 mr-4 h-12 sm:h-14 md:h-18 lg:h-20 xl:h-28"
               {...animationProps}
@@ -39,11 +62,11 @@ const OurWhy = () => {
                 maximize your hiring potential.
               </motion.p>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* What We Do section */}
-        <div className="col-span-12 md:col-span-7 md:pl-8">
+        {/* What We Do column */}
+        <div className="col-span-12 md:col-span-6 md:pl-8">
           <motion.h2
             className="text-amber-500 pt-3 text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl mb-6"
             {...animationProps}
@@ -69,7 +92,7 @@ const OurWhy = () => {
 
           {/* Online Quiz */}
           <motion.div
-            className="p-6 rounded-lg border-l-4 border-amber-500 mt-5"
+            className="p-6 rounded-lg border-l-4 border-amber-500 mt-5 "
             {...animationProps}
           >
             <h3 className="text-xl font-semibold text-white mb-3">
@@ -84,7 +107,7 @@ const OurWhy = () => {
 
           {/* Resume Builder */}
           <motion.div
-            className="p-6 rounded-lg border-l-4 border-amber-500 mt-5"
+            className="p-6 rounded-lg border-l-4 border-amber-500 mt-5 "
             {...animationProps}
           >
             <h3 className="text-xl font-semibold text-white mb-3">
@@ -98,6 +121,29 @@ const OurWhy = () => {
           </motion.div>
         </div>
       </motion.div>
+
+      {/* Stats section */}
+      <section className="w-full py-12 md:py-24 ">
+        <div className="container mx-auto px-4 md:px-6" ref={ref}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={index}
+                custom={index}
+                variants={variants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                className="flex flex-col items-center justify-center space-y-2"
+              >
+                <h3 className="text-4xl font-bold text-amber-500">
+                  {stat.value}
+                </h3>
+                <p className="text-muted-foreground">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
