@@ -2,52 +2,84 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const JoinUs = () => {
+const fadeInTogether = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1,
+      ease: "easeOut",
+    },
+  },
+};
+
+const fadeInGrid = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { duration: 1.5, ease: "easeOut" },
+  },
+};
+
+const HeroDarkMode = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-32">
-      <div>
-        <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl gradient-title">
-          Join Us
-        </h1>
+    <section className="relative w-full min-h-screen flex items-center justify-center px-4 text-center bg-black overflow-hidden">
+      {/* Animated grid background */}
+      <motion.div
+        aria-hidden
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px)
+          `,
+          backgroundSize: "50px 50px",
+          WebkitMaskImage:
+            "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%)",
+          maskImage:
+            "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%)",
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+          maskPosition: "center",
+        }}
+        variants={fadeInGrid}
+        initial="hidden"
+        animate="show"
+      />
 
-        <div className="mt-6 space-y-4 max-w-3xl">
-          <p className="text-2xl sm:text-3xl font-bold text-gray-100 leading-relaxed relative">
-            We’re building something big — and{" "}
-            <span className="relative inline-block font-extrabold">
-              <motion.span
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 1, ease: "easeInOut" }}
-                className="absolute inset-0 bg-yellow-400 rounded z-0 origin-left"
-              />
-              <span className="relative z-10 text-black px-2">
-                WE NEED YOU!
-              </span>
-            </span>
-          </p>
-        </div>
-      </div>
+      {/* Foreground content */}
+      <motion.div
+        className="relative z-10"
+        variants={fadeInTogether}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.p
+          className="uppercase text-sm font-medium text-gray-400 tracking-widest mb-2"
+          variants={fadeInTogether}
+        >
+          Careers at AimAI
+        </motion.p>
 
-      {/* Highlighted "future" Section */}
-      <section className="flex flex-col lg:flex-row justify-center items-start px-6 md:px-16 gap-10 text-white">
-        <div className="">
-          <h1 className="text-3xl mt-10 sm:text-4xl md:text-5xl font-extrabold leading-tight">
-            Design your life, your career, and our{" "}
-            <span className="relative inline-block">
-              <motion.span
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 1, ease: "easeInOut" }}
-                className="absolute inset-0 bg-yellow-400 rounded z-0 origin-left"
-              />
-              <span className="relative z-10 text-black px-2">future</span>
-            </span>
-            ...
-          </h1>
-        </div>
-      </section>
-    </div>
+        <motion.h1
+          className="text-4xl sm:text-5xl md:text-6xl font-bold text-white"
+          variants={fadeInTogether}
+        >
+          Be a part of <br />
+          something great
+        </motion.h1>
+
+        <motion.button
+          className="mt-6 bg-blue-600 text-white font-semibold px-6 py-3 rounded-full shadow-md hover:bg-blue-700 transition cursor-pointer"
+          variants={fadeInTogether}
+        >
+          See open roles →
+        </motion.button>
+      </motion.div>
+    </section>
   );
 };
 
-export default JoinUs;
+export default HeroDarkMode;
